@@ -118,10 +118,10 @@ export function NumberSequenceGame({ user, onComplete, onBack }: NumberSequenceG
 
   const getSequenceDescription = () => {
     switch (sequenceType) {
-      case 'arithmetic': return 'Adding the same number each time';
-      case 'geometric': return 'Multiplying by the same number each time';
-      case 'fibonacci': return 'Each number is the sum of the previous two';
-      case 'squares': return 'Perfect squares sequence';
+      case 'arithmetic': return 'Sumando el mismo número cada vez';
+      case 'geometric': return 'Multiplicando por el mismo número cada vez';
+      case 'fibonacci': return 'Cada número es la suma de los dos anteriores';
+      case 'squares': return 'Secuencia de cuadrados perfectos';
     }
   };
 
@@ -132,7 +132,7 @@ export function NumberSequenceGame({ user, onComplete, onBack }: NumberSequenceG
         <div className="flex items-center justify-between mb-8">
           <Button variant="outline" onClick={onBack} className="gap-2">
             <ArrowLeft className="w-4 h-4" />
-            Back
+            Volver
           </Button>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow">
@@ -149,7 +149,7 @@ export function NumberSequenceGame({ user, onComplete, onBack }: NumberSequenceG
         {/* Progress */}
         <Card className="p-4 mb-6 border-0 shadow-lg bg-white">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-700">Progress</span>
+            <span className="text-gray-700">Progreso</span>
             <span className="text-gray-600">{questionsAnswered}/{totalQuestions}</span>
           </div>
           <Progress value={progress} className="h-2" />
@@ -158,7 +158,7 @@ export function NumberSequenceGame({ user, onComplete, onBack }: NumberSequenceG
         {!isGameOver ? (
           <Card className="p-12 border-0 shadow-2xl bg-gradient-to-br from-purple-50 to-pink-50">
             <div className="text-center">
-              <h2 className="text-2xl mb-4 text-gray-700">Number Sequence</h2>
+              <h2 className="text-2xl mb-4 text-gray-700">Secuencia Numérica</h2>
               <p className="text-sm text-gray-600 mb-8">{getSequenceDescription()}</p>
 
               <div className="mb-8">
@@ -190,10 +190,10 @@ export function NumberSequenceGame({ user, onComplete, onBack }: NumberSequenceG
               </div>
 
               {feedback === 'correct' && (
-                <div className="text-2xl text-green-600 mb-4">✓ Correct! +{20 + Math.floor(timeLeft / 10)} points</div>
+                <div className="text-2xl text-green-600 mb-4">✓ ¡Correcto! +{20 + Math.floor(timeLeft / 10)} puntos</div>
               )}
               {feedback === 'incorrect' && (
-                <div className="text-2xl text-red-600 mb-4">✗ Try again!</div>
+                <div className="text-2xl text-red-600 mb-4">✗ ¡Inténtalo de nuevo!</div>
               )}
 
               <Button
@@ -201,7 +201,7 @@ export function NumberSequenceGame({ user, onComplete, onBack }: NumberSequenceG
                 disabled={!userAnswer || feedback !== null}
                 className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-xl px-8 py-6"
               >
-                Submit Answer
+                Enviar Respuesta
               </Button>
             </div>
           </Card>
@@ -209,15 +209,15 @@ export function NumberSequenceGame({ user, onComplete, onBack }: NumberSequenceG
           <Card className="p-12 border-0 shadow-2xl bg-gradient-to-br from-purple-50 to-pink-50 text-center">
             <div className="mb-6">
               <Star className="w-20 h-20 text-yellow-500 mx-auto mb-4" />
-              <h2 className="text-4xl mb-4 text-gray-800">Game Complete!</h2>
-              <p className="text-2xl text-gray-600 mb-2">Final Score: {score}</p>
-              <p className="text-xl text-gray-600">Questions Answered: {questionsAnswered}/{totalQuestions}</p>
+              <h2 className="text-4xl mb-4 text-gray-800">¡Juego Completado!</h2>
+              <p className="text-2xl text-gray-600 mb-2">Puntuación Final: {score}</p>
+              <p className="text-xl text-gray-600">Preguntas Respondidas: {questionsAnswered}/{totalQuestions}</p>
             </div>
             <Button
               onClick={handleFinish}
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-xl px-8 py-6"
             >
-              Continue
+              Continuar
             </Button>
           </Card>
         )}

@@ -3,10 +3,13 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card } from './ui/card';
 import { Brain, Sparkles } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { Label } from './ui/label';
 
 type LoginPageProps = {
   onLogin: (email: string, password: string) => void;
-  onSignup: (name: string, email: string, password: string) => void;
+  onSignup: (name: string, email: string, password: string, userType: 'student' | 'teacher', schoolId: string, course?: string) => void;
 };
 
 export function LoginPage({ onLogin, onSignup }: LoginPageProps) {
@@ -14,11 +17,33 @@ export function LoginPage({ onLogin, onSignup }: LoginPageProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState<'student' | 'teacher'>('student');
+  const [schoolId, setSchoolId] = useState('');
+  const [course, setCourse] = useState('');
+
+  // Mock schools
+  const schools = [
+    { id: 'school1', name: 'Colegio San Marcos' },
+    { id: 'school2', name: 'Escuela Gabriela Mistral' },
+    { id: 'school3', name: 'Liceo Arturo Prat' },
+    { id: 'school4', name: 'Colegio Pablo Neruda' },
+  ];
+
+  const courses = [
+    '1° Básico',
+    '2° Básico',
+    '3° Básico',
+    '4° Básico',
+    '5° Básico',
+    '6° Básico',
+    '7° Básico',
+    '8° Básico',
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isSignup) {
-      onSignup(name, email, password);
+      onSignup(name, email, password, userType, schoolId, course);
     } else {
       onLogin(email, password);
     }
@@ -32,48 +57,98 @@ export function LoginPage({ onLogin, onSignup }: LoginPageProps) {
             <Brain className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            MathQuest
+            CompiMat
           </h1>
-          <p className="text-gray-600">Learn math through fun games!</p>
+          <p className="text-gray-600">¡Aprende matemáticas a través de juegos divertidos!</p>
         </div>
 
         <Card className="p-8 shadow-xl border-0 bg-white/80 backdrop-blur">
           <form onSubmit={handleSubmit} className="space-y-4">
             {isSignup && (
-              <div>
-                <label className="block mb-2 text-gray-700">Name</label>
-                <Input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Enter your name"
-                  required
-                />
-              </div>
+              <>
+                <div>
+                  <label className="block mb-2 text-gray-700">Tipo de Usuario</label>
+                  <RadioGroup value={userType} onValueChange={(value) => setUserType(value as 'student' | 'teacher')}>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="student" id="student" />
+                      <Label htmlFor="student">Estudiante</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="teacher" id="teacher" />
+                      <Label htmlFor="teacher">Profesor/a</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div>
+                  <label className="block mb-2 text-gray-700">Nombre</label>
+                  <Input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Ingresa tu nombre"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2 text-gray-700">Escuela</label>
+                  <Select value={schoolId} onValueChange={setSchoolId} required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona tu escuela" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {schools.map((school) => (
+                        <SelectItem key={school.id} value={school.id}>
+                          {school.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="block mb-2 text-gray-700">
+                    {userType === 'student' ? 'Tu Curso' : 'Curso Asignado'}
+                  </label>
+                  <Select value={course} onValueChange={setCourse} required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona el curso" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {courses.map((c) => (
+                        <SelectItem key={c} value={c}>
+                          {c}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </>
             )}
             <div>
-              <label className="block mb-2 text-gray-700">Email</label>
+              <label className="block mb-2 text-gray-700">Correo Electrónico</label>
               <Input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder="Ingresa tu correo"
                 required
               />
             </div>
             <div>
-              <label className="block mb-2 text-gray-700">Password</label>
+              <label className="block mb-2 text-gray-700">Contraseña</label>
               <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="Ingresa tu contraseña"
                 required
               />
             </div>
             <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
               <Sparkles className="w-4 h-4 mr-2" />
-              {isSignup ? 'Sign Up' : 'Login'}
+              {isSignup ? 'Registrarse' : 'Iniciar Sesión'}
             </Button>
           </form>
 
@@ -82,15 +157,15 @@ export function LoginPage({ onLogin, onSignup }: LoginPageProps) {
               onClick={() => setIsSignup(!isSignup)}
               className="text-purple-600 hover:text-purple-700"
             >
-              {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign Up"}
+              {isSignup ? '¿Ya tienes una cuenta? Iniciar Sesión' : '¿No tienes una cuenta? Registrarse'}
             </button>
           </div>
         </Card>
 
         <div className="mt-6 text-center text-sm text-gray-600">
-          <p>🎮 Interactive mini-games</p>
-          <p>📊 Track your progress</p>
-          <p>🏆 Compete with friends</p>
+          <p>🎮 Mini-juegos interactivos</p>
+          <p>📊 Sigue tu progreso</p>
+          <p>🏆 Compite con amigos</p>
         </div>
       </div>
     </div>

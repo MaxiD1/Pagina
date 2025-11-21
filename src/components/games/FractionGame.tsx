@@ -104,7 +104,7 @@ export function FractionGame({ user, onComplete, onBack }: FractionGameProps) {
         <div className="flex items-center justify-between mb-8">
           <Button variant="outline" onClick={onBack} className="gap-2">
             <ArrowLeft className="w-4 h-4" />
-            Back
+            Volver
           </Button>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow">
@@ -121,7 +121,7 @@ export function FractionGame({ user, onComplete, onBack }: FractionGameProps) {
         {/* Progress */}
         <Card className="p-4 mb-6 border-0 shadow-lg bg-white">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-700">Progress</span>
+            <span className="text-gray-700">Progreso</span>
             <span className="text-gray-600">{questionsAnswered}/{totalQuestions}</span>
           </div>
           <Progress value={progress} className="h-2" />
@@ -130,8 +130,8 @@ export function FractionGame({ user, onComplete, onBack }: FractionGameProps) {
         {!isGameOver ? (
           <Card className="p-12 border-0 shadow-2xl bg-gradient-to-br from-orange-50 to-red-50">
             <div className="text-center">
-              <h2 className="text-2xl mb-4 text-gray-700">Fraction Frenzy</h2>
-              <p className="text-sm text-gray-600 mb-8">Simplify the fraction to its lowest terms</p>
+              <h2 className="text-2xl mb-4 text-gray-700">Frenesí de Fracciones</h2>
+              <p className="text-sm text-gray-600 mb-8">Simplifica la fracción a su mínima expresión</p>
 
               <div className="mb-8">
                 <div className="text-5xl mb-8 text-gray-800 inline-block">
@@ -167,10 +167,10 @@ export function FractionGame({ user, onComplete, onBack }: FractionGameProps) {
               </div>
 
               {feedback === 'correct' && (
-                <div className="text-2xl text-green-600 mb-4">✓ Correct! +{25 + Math.floor(timeLeft / 10)} points</div>
+                <div className="text-2xl text-green-600 mb-4">✓ ¡Correcto! +{25 + Math.floor(timeLeft / 10)} puntos</div>
               )}
               {feedback === 'incorrect' && (
-                <div className="text-2xl text-red-600 mb-4">✗ Try again!</div>
+                <div className="text-2xl text-red-600 mb-4">✗ ¡Inténtalo de nuevo!</div>
               )}
 
               <Button
@@ -178,7 +178,7 @@ export function FractionGame({ user, onComplete, onBack }: FractionGameProps) {
                 disabled={!userNum || !userDen || feedback !== null}
                 className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-xl px-8 py-6"
               >
-                Submit Answer
+                Enviar Respuesta
               </Button>
             </div>
           </Card>
@@ -186,15 +186,15 @@ export function FractionGame({ user, onComplete, onBack }: FractionGameProps) {
           <Card className="p-12 border-0 shadow-2xl bg-gradient-to-br from-purple-50 to-pink-50 text-center">
             <div className="mb-6">
               <Star className="w-20 h-20 text-yellow-500 mx-auto mb-4" />
-              <h2 className="text-4xl mb-4 text-gray-800">Game Complete!</h2>
-              <p className="text-2xl text-gray-600 mb-2">Final Score: {score}</p>
-              <p className="text-xl text-gray-600">Questions Answered: {questionsAnswered}/{totalQuestions}</p>
+              <h2 className="text-4xl mb-4 text-gray-800">¡Juego Completado!</h2>
+              <p className="text-2xl text-gray-600 mb-2">Puntuación Final: {score}</p>
+              <p className="text-xl text-gray-600">Preguntas Respondidas: {questionsAnswered}/{totalQuestions}</p>
             </div>
             <Button
               onClick={handleFinish}
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-xl px-8 py-6"
             >
-              Continue
+              Continuar
             </Button>
           </Card>
         )}

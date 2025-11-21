@@ -1,7 +1,7 @@
 import { User, GameType } from '../App';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
-import { Brain, Plus, X, Hash, Percent, Trophy, Flame, Star, LogOut } from 'lucide-react';
+import { Brain, Plus, X, Hash, Percent, Trophy, Flame, Star, LogOut, RotateCcw } from 'lucide-react';
 import { Progress } from './ui/progress';
 
 type DashboardProps = {
@@ -10,43 +10,71 @@ type DashboardProps = {
   onLogout: () => void;
 };
 
+type GameInfo = {
+  id: GameType;
+  title: string;
+  description: string;
+  icon: any;
+  color: string;
+  difficulty: string;
+  courseLevel: number; // 1 for 1° Básico, 2 for 2° Básico, etc.
+};
+
 export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
   const progressToNextLevel = ((user.totalScore % 200) / 200) * 100;
 
-  const games = [
+  // Get course number from course string (e.g., "1° Básico" -> 1)
+  const getCurrentCourseNumber = (): number => {
+    const match = user.course?.match(/^(\d+)°/);
+    return match ? parseInt(match[1]) : 1;
+  };
+
+  const currentCourseLevel = getCurrentCourseNumber();
+
+  const allGames: GameInfo[] = [
     {
       id: 'addition' as GameType,
-      title: 'Addition Quest',
-      description: 'Master addition with timed challenges',
+      title: 'Desafío de Suma',
+      description: 'Domina la suma con desafíos cronometrados',
       icon: Plus,
       color: 'from-green-400 to-emerald-500',
-      difficulty: 'Easy',
+      difficulty: 'Fácil',
+      courseLevel: 1, // 1° Básico
     },
     {
       id: 'multiplication' as GameType,
-      title: 'Multiply Madness',
-      description: 'Practice multiplication tables',
+      title: 'Multiplicación Loca',
+      description: 'Practica las tablas de multiplicar',
       icon: X,
       color: 'from-blue-400 to-cyan-500',
-      difficulty: 'Medium',
+      difficulty: 'Medio',
+      courseLevel: 2, // 2° Básico
     },
     {
       id: 'sequence' as GameType,
-      title: 'Number Sequence',
-      description: 'Find the pattern and complete the sequence',
+      title: 'Secuencia Numérica',
+      description: 'Encuentra el patrón y completa la secuencia',
       icon: Hash,
       color: 'from-purple-400 to-pink-500',
-      difficulty: 'Medium',
+      difficulty: 'Medio',
+      courseLevel: 3, // 3° Básico
     },
     {
       id: 'fractions' as GameType,
-      title: 'Fraction Frenzy',
-      description: 'Simplify and compare fractions',
+      title: 'Frenesí de Fracciones',
+      description: 'Simplifica y compara fracciones',
       icon: Percent,
       color: 'from-orange-400 to-red-500',
-      difficulty: 'Hard',
+      difficulty: 'Difícil',
+      courseLevel: 4, // 4° Básico
     },
   ];
+
+  // Get games for current course level
+  const currentGames = allGames.filter(game => game.courseLevel === currentCourseLevel);
+  
+  // Get games from previous courses for review
+  const reviewGames = allGames.filter(game => game.courseLevel < currentCourseLevel);
 
   return (
     <div className="min-h-screen p-6">
@@ -59,15 +87,20 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
             </div>
             <div>
               <h1 className="text-3xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                MathQuest
+                CompiMat
               </h1>
-              <p className="text-gray-600">Welcome back, {user.name}!</p>
+              <p className="text-gray-600">¡Bienvenido de vuelta, {user.name}!</p>
             </div>
           </div>
-          <Button variant="outline" onClick={onLogout} className="gap-2">
-            <LogOut className="w-4 h-4" />
-            Logout
-          </Button>
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <p className="text-sm text-gray-600">{user.course}</p>
+            </div>
+            <Button variant="outline" onClick={onLogout} className="gap-2">
+              <LogOut className="w-4 h-4" />
+              Salir
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -75,7 +108,7 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
           <Card className="p-4 bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-100 text-sm">Level</p>
+                <p className="text-purple-100 text-sm">Nivel</p>
                 <p className="text-3xl">{user.level}</p>
               </div>
               <Star className="w-8 h-8 text-purple-200" />
@@ -85,8 +118,8 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
           <Card className="p-4 bg-gradient-to-br from-orange-500 to-red-600 text-white border-0 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-100 text-sm">Streak</p>
-                <p className="text-3xl">{user.streak} days</p>
+                <p className="text-orange-100 text-sm">Racha</p>
+                <p className="text-3xl">{user.streak} días</p>
               </div>
               <Flame className="w-8 h-8 text-orange-200" />
             </div>
@@ -95,7 +128,7 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
           <Card className="p-4 bg-gradient-to-br from-blue-500 to-cyan-600 text-white border-0 shadow-lg">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 text-sm">Total Score</p>
+                <p className="text-blue-100 text-sm">Puntuación Total</p>
                 <p className="text-3xl">{user.totalScore}</p>
               </div>
               <Trophy className="w-8 h-8 text-blue-200" />
@@ -108,7 +141,7 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
               className="w-full h-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
             >
               <Trophy className="w-5 h-5 mr-2" />
-              View Leaderboard
+              Ver Clasificación
             </Button>
           </Card>
         </div>
@@ -116,43 +149,100 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
         {/* Level Progress */}
         <Card className="p-6 mb-8 border-2 border-purple-200 shadow-lg bg-white">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-700">Level {user.level} Progress</span>
+            <span className="text-gray-700">Progreso Nivel {user.level}</span>
             <span className="text-gray-600">{user.totalScore % 200}/200 XP</span>
           </div>
           <Progress value={progressToNextLevel} className="h-3" />
         </Card>
 
-        {/* Games Grid */}
-        <div>
-          <h2 className="text-2xl mb-4 text-gray-800">Choose Your Challenge</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {games.map((game) => (
-              <Card
-                key={game.id}
-                className="p-6 cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-0 bg-white"
-                onClick={() => onSelectGame(game.id)}
-              >
-                <div className={`w-16 h-16 bg-gradient-to-br ${game.color} rounded-2xl flex items-center justify-center mb-4 shadow-lg`}>
-                  <game.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl mb-2 text-gray-800">{game.title}</h3>
-                <p className="text-gray-600 text-sm mb-4">{game.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className={`text-xs px-3 py-1 rounded-full ${
-                    game.difficulty === 'Easy' ? 'bg-green-100 text-green-700' :
-                    game.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
-                    'bg-red-100 text-red-700'
-                  }`}>
-                    {game.difficulty}
-                  </span>
-                  <Button size="sm" className={`bg-gradient-to-r ${game.color} text-white border-0`}>
-                    Play
-                  </Button>
-                </div>
-              </Card>
-            ))}
+        {/* Current Course Games */}
+        {currentGames.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl mb-4 text-gray-800">Juegos de {user.course}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {currentGames.map((game) => (
+                <Card
+                  key={game.id}
+                  className="p-6 cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-0 bg-white"
+                  onClick={() => onSelectGame(game.id)}
+                >
+                  <div className={`w-16 h-16 bg-gradient-to-br ${game.color} rounded-2xl flex items-center justify-center mb-4 shadow-lg`}>
+                    <game.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl mb-2 text-gray-800">{game.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{game.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-xs px-3 py-1 rounded-full ${
+                      game.difficulty === 'Fácil' ? 'bg-green-100 text-green-700' :
+                      game.difficulty === 'Medio' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-red-100 text-red-700'
+                    }`}>
+                      {game.difficulty}
+                    </span>
+                    <Button size="sm" className={`bg-gradient-to-r ${game.color} text-white border-0`}>
+                      Jugar
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Review Games from Previous Courses */}
+        {reviewGames.length > 0 && (
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <RotateCcw className="w-6 h-6 text-purple-600" />
+              <h2 className="text-2xl text-gray-800">Repaso</h2>
+              <span className="text-sm text-gray-600">(Juegos de cursos anteriores)</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {reviewGames.map((game) => (
+                <Card
+                  key={game.id}
+                  className="p-6 cursor-pointer hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-purple-200 bg-purple-50/50"
+                  onClick={() => onSelectGame(game.id)}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs px-2 py-1 rounded-full bg-purple-200 text-purple-700">
+                      {game.courseLevel}° Básico
+                    </span>
+                    <RotateCcw className="w-4 h-4 text-purple-500" />
+                  </div>
+                  <div className={`w-16 h-16 bg-gradient-to-br ${game.color} rounded-2xl flex items-center justify-center mb-4 shadow-lg opacity-90`}>
+                    <game.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl mb-2 text-gray-800">{game.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{game.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-xs px-3 py-1 rounded-full ${
+                      game.difficulty === 'Fácil' ? 'bg-green-100 text-green-700' :
+                      game.difficulty === 'Medio' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-red-100 text-red-700'
+                    }`}>
+                      {game.difficulty}
+                    </span>
+                    <Button size="sm" className={`bg-gradient-to-r ${game.color} text-white border-0`}>
+                      Repasar
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Message if no games available for current course */}
+        {currentGames.length === 0 && reviewGames.length === 0 && (
+          <Card className="p-12 text-center border-2 border-purple-200 bg-purple-50">
+            <Brain className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+            <h3 className="text-2xl mb-2 text-gray-800">¡Próximamente!</h3>
+            <p className="text-gray-600">
+              Los juegos para {user.course} estarán disponibles pronto.
+            </p>
+          </Card>
+        )}
       </div>
     </div>
   );

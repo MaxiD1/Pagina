@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { LoginPage } from './components/LoginPage';
 import { Dashboard } from './components/Dashboard';
+import { TeacherDashboard } from './components/TeacherDashboard';
 import { Leaderboard } from './components/Leaderboard';
 import { AdditionGame } from './components/games/AdditionGame';
 import { MultiplicationGame } from './components/games/MultiplicationGame';
@@ -14,6 +15,10 @@ export type User = {
   totalScore: number;
   level: number;
   streak: number;
+  userType: 'student' | 'teacher';
+  schoolId: string;
+  course?: string; // For students: "1° Básico" to "8° Básico"
+  assignedCourse?: string; // For teachers: the course they teach
 };
 
 export type GameType = 'dashboard' | 'addition' | 'multiplication' | 'sequence' | 'fractions' | 'leaderboard';
@@ -31,11 +36,14 @@ export default function App() {
       totalScore: 1250,
       level: 8,
       streak: 5,
+      userType: 'student',
+      schoolId: 'school1',
+      course: '5° Básico',
     };
     setCurrentUser(mockUser);
   };
 
-  const handleSignup = (name: string, email: string, password: string) => {
+  const handleSignup = (name: string, email: string, password: string, userType: 'student' | 'teacher', schoolId: string, course?: string) => {
     // Mock signup
     const mockUser: User = {
       id: '1',
@@ -44,6 +52,10 @@ export default function App() {
       totalScore: 0,
       level: 1,
       streak: 0,
+      userType: userType,
+      schoolId: schoolId,
+      course: userType === 'student' ? course : undefined,
+      assignedCourse: userType === 'teacher' ? course : undefined,
     };
     setCurrentUser(mockUser);
   };
@@ -70,46 +82,55 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-      {currentView === 'dashboard' && (
-        <Dashboard
+      {currentUser.userType === 'teacher' ? (
+        <TeacherDashboard
           user={currentUser}
-          onSelectGame={setCurrentView}
           onLogout={handleLogout}
         />
-      )}
-      {currentView === 'addition' && (
-        <AdditionGame
-          user={currentUser}
-          onComplete={handleGameComplete}
-          onBack={() => setCurrentView('dashboard')}
-        />
-      )}
-      {currentView === 'multiplication' && (
-        <MultiplicationGame
-          user={currentUser}
-          onComplete={handleGameComplete}
-          onBack={() => setCurrentView('dashboard')}
-        />
-      )}
-      {currentView === 'sequence' && (
-        <NumberSequenceGame
-          user={currentUser}
-          onComplete={handleGameComplete}
-          onBack={() => setCurrentView('dashboard')}
-        />
-      )}
-      {currentView === 'fractions' && (
-        <FractionGame
-          user={currentUser}
-          onComplete={handleGameComplete}
-          onBack={() => setCurrentView('dashboard')}
-        />
-      )}
-      {currentView === 'leaderboard' && (
-        <Leaderboard
-          currentUser={currentUser}
-          onBack={() => setCurrentView('dashboard')}
-        />
+      ) : (
+        <>
+          {currentView === 'dashboard' && (
+            <Dashboard
+              user={currentUser}
+              onSelectGame={setCurrentView}
+              onLogout={handleLogout}
+            />
+          )}
+          {currentView === 'addition' && (
+            <AdditionGame
+              user={currentUser}
+              onComplete={handleGameComplete}
+              onBack={() => setCurrentView('dashboard')}
+            />
+          )}
+          {currentView === 'multiplication' && (
+            <MultiplicationGame
+              user={currentUser}
+              onComplete={handleGameComplete}
+              onBack={() => setCurrentView('dashboard')}
+            />
+          )}
+          {currentView === 'sequence' && (
+            <NumberSequenceGame
+              user={currentUser}
+              onComplete={handleGameComplete}
+              onBack={() => setCurrentView('dashboard')}
+            />
+          )}
+          {currentView === 'fractions' && (
+            <FractionGame
+              user={currentUser}
+              onComplete={handleGameComplete}
+              onBack={() => setCurrentView('dashboard')}
+            />
+          )}
+          {currentView === 'leaderboard' && (
+            <Leaderboard
+              currentUser={currentUser}
+              onBack={() => setCurrentView('dashboard')}
+            />
+          )}
+        </>
       )}
     </div>
   );

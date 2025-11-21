@@ -10,16 +10,16 @@ type LeaderboardProps = {
 };
 
 export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
-  // Mock leaderboard data
+  // Mock leaderboard data - filtered by school and course
   const leaderboardData = [
-    { id: '1', name: 'Alex Chen', score: 2850, level: 14, streak: 12 },
-    { id: '2', name: 'Sarah Johnson', score: 2640, level: 13, streak: 8 },
-    { id: '3', name: 'Mike Rodriguez', score: 2310, level: 11, streak: 15 },
-    { id: '4', name: currentUser.name, score: currentUser.totalScore, level: currentUser.level, streak: currentUser.streak },
-    { id: '5', name: 'Emma Wilson', score: 1180, level: 6, streak: 3 },
-    { id: '6', name: 'David Kim', score: 980, level: 5, streak: 7 },
-    { id: '7', name: 'Lisa Brown', score: 750, level: 4, streak: 2 },
-    { id: '8', name: 'John Smith', score: 520, level: 3, streak: 1 },
+    { id: '1', name: 'Alex Chen', score: 2850, level: 14, streak: 12, course: currentUser.course, schoolId: currentUser.schoolId },
+    { id: '2', name: 'Sarah Johnson', score: 2640, level: 13, streak: 8, course: currentUser.course, schoolId: currentUser.schoolId },
+    { id: '3', name: 'Mike Rodriguez', score: 2310, level: 11, streak: 15, course: currentUser.course, schoolId: currentUser.schoolId },
+    { id: '4', name: currentUser.name, score: currentUser.totalScore, level: currentUser.level, streak: currentUser.streak, course: currentUser.course, schoolId: currentUser.schoolId },
+    { id: '5', name: 'Emma Wilson', score: 1180, level: 6, streak: 3, course: currentUser.course, schoolId: currentUser.schoolId },
+    { id: '6', name: 'David Kim', score: 980, level: 5, streak: 7, course: currentUser.course, schoolId: currentUser.schoolId },
+    { id: '7', name: 'Lisa Brown', score: 750, level: 4, streak: 2, course: currentUser.course, schoolId: currentUser.schoolId },
+    { id: '8', name: 'John Smith', score: 520, level: 3, streak: 1, course: currentUser.course, schoolId: currentUser.schoolId },
   ].sort((a, b) => b.score - a.score);
 
   const getRankIcon = (index: number) => {
@@ -43,13 +43,13 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
         <div className="flex items-center gap-4 mb-8">
           <Button variant="outline" onClick={onBack} className="gap-2">
             <ArrowLeft className="w-4 h-4" />
-            Back
+            Volver
           </Button>
           <div>
             <h1 className="text-3xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Leaderboard
+              Clasificación
             </h1>
-            <p className="text-gray-600">Compete with your friends!</p>
+            <p className="text-gray-600">¡Compite con tus compañeros de {currentUser.course}!</p>
           </div>
         </div>
 
@@ -60,7 +60,7 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
             <Card className="p-6 text-center border-0 bg-gradient-to-br from-gray-100 to-gray-200 shadow-lg">
               <div className="mb-4">
                 <Medal className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                <div className="text-2xl">2nd</div>
+                <div className="text-2xl">2°</div>
               </div>
               <Avatar className="w-16 h-16 mx-auto mb-3">
                 <AvatarFallback className="bg-gradient-to-br from-gray-300 to-gray-400 text-white">
@@ -69,7 +69,7 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
               </Avatar>
               <div className="mb-2">{leaderboardData[1].name}</div>
               <div className="text-2xl">{leaderboardData[1].score}</div>
-              <div className="text-sm text-gray-600">Level {leaderboardData[1].level}</div>
+              <div className="text-sm text-gray-600">Nivel {leaderboardData[1].level}</div>
             </Card>
           )}
 
@@ -78,7 +78,7 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
             <Card className="p-6 text-center border-0 bg-gradient-to-br from-yellow-100 to-orange-200 shadow-2xl transform scale-110">
               <div className="mb-4">
                 <Trophy className="w-16 h-16 text-yellow-500 mx-auto mb-2" />
-                <div className="text-3xl">1st</div>
+                <div className="text-3xl">1°</div>
               </div>
               <Avatar className="w-20 h-20 mx-auto mb-3">
                 <AvatarFallback className="bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-2xl">
@@ -87,7 +87,7 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
               </Avatar>
               <div className="mb-2">{leaderboardData[0].name}</div>
               <div className="text-3xl">{leaderboardData[0].score}</div>
-              <div className="text-sm text-gray-600">Level {leaderboardData[0].level}</div>
+              <div className="text-sm text-gray-600">Nivel {leaderboardData[0].level}</div>
             </Card>
           )}
 
@@ -96,7 +96,7 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
             <Card className="p-6 text-center border-0 bg-gradient-to-br from-orange-100 to-orange-200 shadow-lg">
               <div className="mb-4">
                 <Medal className="w-12 h-12 text-orange-600 mx-auto mb-2" />
-                <div className="text-2xl">3rd</div>
+                <div className="text-2xl">3°</div>
               </div>
               <Avatar className="w-16 h-16 mx-auto mb-3">
                 <AvatarFallback className="bg-gradient-to-br from-orange-400 to-orange-600 text-white">
@@ -105,7 +105,7 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
               </Avatar>
               <div className="mb-2">{leaderboardData[2].name}</div>
               <div className="text-2xl">{leaderboardData[2].score}</div>
-              <div className="text-sm text-gray-600">Level {leaderboardData[2].level}</div>
+              <div className="text-sm text-gray-600">Nivel {leaderboardData[2].level}</div>
             </Card>
           )}
         </div>
@@ -113,7 +113,7 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
         {/* Full Leaderboard List */}
         <Card className="border-0 shadow-lg overflow-hidden bg-white">
           <div className="p-6">
-            <h2 className="text-xl mb-4 text-gray-800">Full Rankings</h2>
+            <h2 className="text-xl mb-4 text-gray-800">Clasificación Completa</h2>
             <div className="space-y-3">
               {leaderboardData.map((player, index) => {
                 const isCurrentUser = player.id === currentUser.id;
@@ -143,10 +143,10 @@ export function Leaderboard({ currentUser, onBack }: LeaderboardProps) {
                     <div className="flex-1">
                       <div className={`${isCurrentUser ? '' : 'text-gray-800'}`}>
                         {player.name}
-                        {isCurrentUser && <span className="ml-2 text-purple-600">(You)</span>}
+                        {isCurrentUser && <span className="ml-2 text-purple-600">(Tú)</span>}
                       </div>
                       <div className="text-sm text-gray-600">
-                        Level {player.level} • {player.streak} day streak
+                        Nivel {player.level} • Racha de {player.streak} días
                       </div>
                     </div>
 
