@@ -83,10 +83,10 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <Brain className="w-6 h-6 text-white" />
+              <img src="../../Otros assets/diff.png" alt="" />
             </div>
             <div>
-              <h1 className="text-3xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <h1 className="text-4xl mb-2 green-500 bg-clip-text">
                 CompiMat
               </h1>
               <p className="text-gray-600">¡Bienvenido de vuelta, {user.name}!</p>
@@ -216,13 +216,7 @@ export function Dashboard({ user, onSelectGame, onLogout }: DashboardProps) {
                   <h3 className="text-xl mb-2 text-gray-800">{game.title}</h3>
                   <p className="text-gray-600 text-sm mb-4">{game.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className={`text-xs px-3 py-1 rounded-full ${
-                      game.difficulty === 'Fácil' ? 'bg-green-100 text-green-700' :
-                      game.difficulty === 'Medio' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
-                    }`}>
-                      {game.difficulty}
-                    </span>
+
                     <Button size="sm" className={`bg-gradient-to-r ${game.color} text-white border-0`}>
                       Repasar
                     </Button>

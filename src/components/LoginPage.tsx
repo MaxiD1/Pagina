@@ -53,10 +53,10 @@ export function LoginPage({ onLogin, onSignup }: LoginPageProps) {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl mb-4 shadow-lg">
-            <Brain className="w-10 h-10 text-white" />
+          <div className="inline-flex items-center justify-center w-15 h-15 bg-gradient-to-br from-green-600 to-green-600 rounded-3xl mb-4 shadow-lg">
+            <img src="../../Otros assets/diff.png" alt="" />
           </div>
-          <h1 className="text-4xl mb-2 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl mb-2 green-500 bg-clip-text">
             CompiMat
           </h1>
           <p className="text-gray-600">¡Aprende matemáticas a través de juegos divertidos!</p>
@@ -146,7 +146,7 @@ export function LoginPage({ onLogin, onSignup }: LoginPageProps) {
                 required
               />
             </div>
-            <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+            <Button type="submit" className="w-full bg-green-500 from-green-400 to-green-400 hover:from-green-400 hover:to-green-400">
               <Sparkles className="w-4 h-4 mr-2" />
               {isSignup ? 'Registrarse' : 'Iniciar Sesión'}
             </Button>
@@ -155,7 +155,7 @@ export function LoginPage({ onLogin, onSignup }: LoginPageProps) {
           <div className="mt-6 text-center">
             <button
               onClick={() => setIsSignup(!isSignup)}
-              className="text-purple-600 hover:text-purple-700"
+              className="text-green-500 hover:text-purple-700"
             >
               {isSignup ? '¿Ya tienes una cuenta? Iniciar Sesión' : '¿No tienes una cuenta? Registrarse'}
             </button>
